@@ -94,6 +94,7 @@ def main():
 
 ### Full code
 ```
+cat > /etc/nginx/fstack_ha << 'OEF'
 import os
 import subprocess
 import time
@@ -158,7 +159,15 @@ def main():
 
 if __name__ == "__main__":
     main()
+OEF
+
 ```
+
+### Making the Script Executable
+```
+chmod +x /etc/nginx/fstack_ha
+```
+- chmod +x /etc/nginx/fstack_ha: Makes the fstack_ha script executable.
 
 ### Creating the Systemd Service File
 ```

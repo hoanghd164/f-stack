@@ -1,6 +1,4 @@
 ## F-Stack tools deploy
-This script sets the PKG_CONFIG_PATH environment variable to ensure that the build process can locate the necessary package configuration files. It then lists the contents of the tools directories to verify their presence. The script changes to the /data/f-stack/tools directory and runs the make and make install commands to build and install the tools. After installation, it lists the contents of the /usr/local/bin/f-stack/ directory to verify the installation and runs the ifconfig tool to display the network configuration.
-
 ### Setting the PKG_CONFIG_PATH Environment Variable
 ```
 export PKG_CONFIG_PATH=/usr/lib64/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib/pkgconfig

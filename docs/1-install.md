@@ -1,6 +1,4 @@
 ## F-Stack install
-This script installs and configures F-Stack and Nginx with custom modules on a Linux system. It includes steps to install dependencies, build DPDK and F-Stack, configure hugepages, load kernel modules, bind network interfaces, and configure Nginx with custom modules. Finally, it sets up the necessary configuration files for F-Stack and Nginx.
-
 ### Step 1: Update and Install Dependencies *
 ```
 apt update
@@ -174,28 +172,20 @@ make install
 mkdir -p /var/lib/nginx/body
 chmod 700 /var/lib/nginx/body
 ```
-
-### Step 14: Verify Nginx Installation
-```
-mkdir -p /var/lib/nginx/body
-chmod 700 /var/lib/nginx/body
-```
 * Create directory: mkdir -p /var/lib/nginx/body
 * Set permissions: chmod 700 /var/lib/nginx/body
 
-### Step 15: Verify Nginx Installation
+### Step 14: Verify Nginx Installation
 ```
 nginx -V
 ```
 * Verify Nginx installation: nginx -V
-### Step 16: Configure F-Stack and Nginx
-
+### Step 15: Configure F-Stack and Nginx
 ```
-Step 16: Configure F-Stack and Nginx
 cat > /etc/nginx/f-stack.conf << 'OEF'
 [dpdk]
-lcore_mask=4
-channel=4
+lcore_mask=14
+channel=14
 promiscuous=1
 numa_on=1
 tx_csum_offoad_skip=0
@@ -274,7 +264,7 @@ http {
         server_name  localhost;
         access_log /dev/null;
         location / {
-            return 200 "<h1>Hello, World! F-Stack ($(hostname))</h1>";
+            return 200 "<h1>Hello, World! F-Stack</h1>";
         }
         error_page   500 502 503 504  /50x.html;
         location = /50x.html {
@@ -285,6 +275,7 @@ http {
 EOF
 
 nginx -t
+nginx -s reload
 ```
 
 * Create F-Stack configuration file: /etc/nginx/f-stack.conf
@@ -300,7 +291,8 @@ HUGEPAPGE=1024
 - HUGEPAPGE=1024: Defines the number of hugepages to be allocated (1024).
 
 ### Creating the F-Stack Startup Script
-```cat > /etc/nginx/start.f-stack.sh << OEF
+```
+cat > /etc/nginx/start.f-stack.sh << OEF
 echo ${HUGEPAPGE} > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
 modprobe uio
 insmod /data/f-stack/dpdk/build/kernel/linux/igb_uio/igb_uio.ko
@@ -319,6 +311,11 @@ OEF
 - python3 dpdk-devbind.py --bind=igb_uio ${NIC}: Binds the specified network interface to the igb_uio driver using the dpdk-devbind.py script.
 
 ### Adding the Script to Crontab for Reboot
+- Run command.
+```
+crontab -e
+```
+- Adding the Script to Crontab for Reboot
 ```
 @reboot /etc/nginx/start.f-stack.sh > /var/log/start.f.stack.log 2>&1
 ```
@@ -326,6 +323,6 @@ OEF
 
 ### Making the Script Executable
 ```
-chmod +x /etc/nginx/start.f.stack.sh
+chmod +x /etc/nginx/start.f-stack.sh
 ```
-- chmod +x /etc/nginx/start.f.stack.sh: Makes the start.f-stack.sh script executable.
+- chmod +x /etc/nginx/start.f-stack.sh: Makes the start.f-stack.sh script executable.

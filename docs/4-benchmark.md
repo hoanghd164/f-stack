@@ -1,5 +1,4 @@
 ## Benchmark F-Stack
-This script updates the package lists and installs necessary dependencies for building software. It then clones the wrk benchmarking tool from GitHub and builds it. The script sets system limits for open file descriptors and user processes, configures kernel parameters for maximum file handles and threads, and applies these changes. Finally, it runs the wrk benchmarking tool to test the performance of the server at the specified URL.
 ### Updating and Installing Dependencies
 ```
 apt update
@@ -17,24 +16,11 @@ make
 ### Setting System Limits
 ```
 ulimit -n 65536
-ulimit -u 65536
-```
-
-### Configuring System Parameters
-- Edit /etc/sysctl.conf to configure kernel parameters at runtime.
-```
-fs.file-max = 2097152
-kernel.threads-max = 2097152
-```
-
-- Applying System Parameter Changes
-- Loads the kernel parameters from /etc/sysctl.conf and applies them.
-```
-sysctl -p
 ```
 
 ### Running the Benchmark
 ```
+cd /root/wrk
 ./wrk -t10 -c1000 -d30s http://10.237.7.79
 ```
 * ./wrk -t10 -c1000 -d30s http://10.237.7.79: Runs the wrk benchmarking tool with the following parameters:
