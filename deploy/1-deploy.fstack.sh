@@ -3,9 +3,6 @@ apt-get install git gcc openssl libssl-dev linux-headers-$(uname -r) bc libnuma1
 pip3 install pyelftools
 
 mkdir -p /data/
-wget https://wiki.hoanghd.com/wp-content/uploads/codes/f-stack.tar -O /data/f-stack.tar
-cd /data/
-tar -xvf f-stack.tar
 # git clone https://github.com/F-Stack/f-stack.git /data/f-stack
 
 cd /data/f-stack/dpdk
